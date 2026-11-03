@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#172b4d">
+<meta name="description" content="Személyes otthoni súlyzós edzésterv, gyakorlatleírásokkal és edzésnaplóval.">
+<link rel="manifest" href="manifest.json">
+<title>Otthoni edzésnapló</title>
+<style>
+:root{--navy:#172b4d;--blue:#3569a8;--bg:#f3f6fa;--card:#fff;--ink:#1d2939;--muted:#667085;--line:#e4e9f0;--green:#198754;--orange:#b86b16}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.48 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(135deg,#172b4d,#315b8f);color:#fff;padding:24px 18px 18px}
+.wrap{max-width:980px;margin:auto}header h1{margin:0;font-size:25px}header p{margin:6px 0 0;color:#dbe7f5;font-size:14px}
+nav{display:flex;gap:8px;overflow:auto;padding:12px 14px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav button{border:0;background:#eef2f7;color:#344054;border-radius:999px;padding:10px 15px;font-weight:650;white-space:nowrap}
+nav button.active{background:var(--navy);color:#fff}
+main{max-width:980px;margin:18px auto;padding:0 14px 40px}
+h2{font-size:21px;margin:8px 0 12px}h3{font-size:17px;margin:0 0 8px}
+p{margin:6px 0}.muted{color:var(--muted);font-size:14px}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 2px 8px #172b4d08}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.day{border-top:4px solid var(--blue)}.day h3{display:flex;justify-content:space-between;align-items:center}
+.pill{font-size:12px;background:#eaf1fa;color:#244b7a;padding:4px 9px;border-radius:99px;font-weight:700}
+.exercise{display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:center}
+.art{width:112px;height:92px;border-radius:12px;background:#edf3fa;display:grid;place-items:center}
+.art svg{width:100px;height:82px}
+.exercise h3{margin:0 0 4px}.meta{display:flex;gap:7px;flex-wrap:wrap;margin:7px 0}
+.meta span{font-size:12px;padding:4px 8px;border-radius:8px;background:#f0f3f7;color:#344054}
+button,.btn{cursor:pointer}.primary{border:0;background:var(--blue);color:#fff;border-radius:10px;padding:10px 14px;font-weight:650}
+.secondary{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 12px;font-weight:600}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+select,input,textarea{font:inherit;border:1px solid #ccd5e1;border-radius:10px;padding:10px;background:#fff;color:var(--ink);max-width:100%}
+input[type=number]{width:90px}label{font-size:13px;color:#475467;display:block;margin:8px 0 4px}
+.detail{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.detail ul{padding-left:20px;margin:6px 0}.detail li{margin:4px 0}
+.logrow{display:grid;grid-template-columns:1fr 80px 80px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.logrow:last-child{border:0}.small{font-size:12px;color:var(--muted)}
+.sets{display:flex;gap:6px;flex-wrap:wrap}.setbox{background:#f5f7fa;border-radius:9px;padding:7px}
+.setbox input{width:66px;padding:7px}
+.hidden{display:none!important}
+.notice{border-left:4px solid #e0a13b;background:#fff8e9;padding:12px 14px;border-radius:8px;font-size:14px}
+.success{color:var(--green);font-weight:650}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:560px){header{padding:20px 16px 16px}.exercise{grid-template-columns:88px 1fr;gap:10px}.art{width:88px;height:82px}.art svg{width:82px}.panel,.card{padding:13px}.logrow{grid-template-columns:1fr 68px 68px}.setbox input{width:58px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Otthoni edzésnapló</h1><p>3 napos felsőtest-program · két állítható súlyzó · max. 15 kg / kéz</p></div></header>
+<nav>
+<button class="active" data-tab="plan">Heti terv</button>
+<button data-tab="library">Gyakorlatok</button>
+<button data-tab="log">Edzésnapló</button>
+<button data-tab="guide">Útmutató</button>
+</nav>
+<main>
+<section id="plan">
+<h2>Heti beosztás</h2>
+<p class="muted">A kardiónapok között váltogasd a futást és a szobakerékpárt. A súlyzós edzések között legyen legalább egy pihenőnap.</p>
+<div class="grid" id="planCards"></div>
+<div class="notice"><b>Fontos:</b> betegségből csak a tünetek egyértelmű javulása után, fokozatosan térj vissza. Mellkasi fájdalom, szokatlan légszomj, szédülés vagy éles fájdalom esetén állj meg.</div>
+</section>
+<section id="library" class="hidden">
+<h2>Gyakorlatkönyvtár</h2><p class="muted">Válassz izomcsoportot, majd nyisd le a gyakorlatot a részletes leíráshoz és alternatívákhoz.</p>
+<div class="filters"><select id="groupFilter"><option value="all">Minden izomcsoport</option><option>Mell</option><option>Váll</option><option>Hát</option><option>Bicepsz</option><option>Tricepsz</option><option>Törzs</option></select><input id="search" placeholder="Keresés gyakorlatra…"></div>
+<div id="exerciseList"></div>
+</section>
+<section id="log" class="hidden">
+<h2>Edzésnapló</h2><p class="muted">Rögzítsd a súlyt és az ismétléseket. Az adatok ezen az eszközön, a böngészőben maradnak.</p>
+<div class="panel">
+<label for="logDate">Dátum</label><input id="logDate" type="date">
+<label for="workoutSelect">Edzés</label><select id="workoutSelect"><option value="A">A – Mell, váll, tricepsz</option><option value="B">B – Hát, bicepsz, törzs</option><option value="C">C – Teljes felsőtest</option></select>
+<div id="logExercises"></div>
+<label for="logNote">Megjegyzés (pl. közérzet, nehézség)</label><textarea id="logNote" rows="2" style="width:100%"></textarea>
+<button class="primary" id="saveLog" style="margin-top:12px">Edzés mentése</button>
+<span id="saveMsg" class="success"></span>
+</div>
+<h3>Korábbi edzések</h3><div id="history"></div>
+<button class="secondary" id="exportData">Napló exportálása (JSON)</button>
+</section>
+<section id="guide" class="hidden">
+<h2>Használati útmutató</h2>
+<div class="panel"><h3>Hogyan válassz súlyt?</h3><p>Olyan súlyt válassz, amellyel a megadott ismétléstartomány szabályosan teljesíthető, és a sorozat végén még körülbelül 2 ismétlés maradna benned. A megadott kilogrammok kiinduló becslések, nem kötelező célértékek.</p></div>
+<div class="panel"><h3>Progresszió</h3><ul><li>1–2. hét: gyakorlatonként 2 sorozat, technika és hozzászokás.</li><li>3. héttől: a fő gyakorlatoknál 3 sorozat; a külön jelölt kiegészítőknél 2.</li><li>Ha minden sorozatban eléred az ismétléstartomány felső értékét jó technikával, emelj a súlyon kis lépésben.</li><li>Ha eléred a 15 kg-os korlátot, lassítsd a leengedést 3–4 másodpercre, vagy használj egyoldalas változatot.</li></ul></div>
+<div class="panel"><h3>Pihenőidő és tempó</h3><p>Nagyobb gyakorlatok: 75–90 másodperc. Kiegészítők: 45–60 másodperc. Kontrollált leengedés, lendület nélkül. A bemelegítés legyen 4–5 perc könnyű váll-, kar- és lapockamozgatás.</p></div>
+<div class="panel"><h3>Felszerelés és biztonság</h3><p>A program két állítható egykezes súlyzóhoz készült, legfeljebb 15 kg-os terheléssel súlyzónként. A gyakorlatok nem igényelnek padot; ahol támasz hasznos, stabil széket vagy asztalt használj. A döntött törzsű mozdulatoknál tartsd semlegesen a gerinced.</p><p class="muted">A lábgyakorlatok szándékosan kimaradtak a kérésednek megfelelően. A plankek és a döntött törzsű gyakorlatok stabilizáló munkát azért igényelnek.</p></div>
+</section>
+</main>
+<footer>Az edzésnapló offline is használható, ha egyszer már megnyitottad és telepítetted. Az adatok törlődhetnek böngészőadatok törlésekor.</footer>
+<script src="app.js"></script>
+</body></html>

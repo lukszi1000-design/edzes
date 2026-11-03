@@ -1,0 +1,17 @@
+{
+  "name": "Otthoni edzésnapló",
+  "short_name": "Edzésnapló",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fa",
+  "theme_color": "#172b4d",
+  "lang": "hu",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
